@@ -1,24 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
-int n,s[100];
+int nrCoins=6,cashToReturn=30,s[100],a[100]={10,10,5,20,5,5},suma=0;
 
 int valid(int k)
 {
-    int j;
-    ///0-invalid
-    ///1-valid
-    if(k==0)
+    if(k>=nrCoins)
+        return 0;
+    if(suma <= cashToReturn)
         return 1;
-    for(j=k-1;j>=0;j--)
-        if(s[k]==s[j])
-            return 0;
-    return 1;
+    return 0;
 }
 
 
 int solutie(int k)
 {
-    if(k==n-1)
+    if(k == nrCoins-1 && suma == cashToReturn)
     ///if(k==2)
         return 1;
     return 0;
@@ -28,16 +24,19 @@ void afisare(int k)
 {
     int i;
     printf("Solutia: ");
-    for(i=0;i<n;i++)
-        printf("%d ",s[i]);
+    for(i=0;i<=k;i++)
+        if(s[i]==1)
+        printf("%d ",a[i]);
     printf("\n");
 }
 void backi(int k)
 {
     int i;
-    for(i=1;i<=n;i++)
+    for(i=0;i<=1;i++)
     {
         s[k]=i;
+        if(i==1)
+            suma+=a[k];
         if(valid(k)==1)
         {
             if(solutie(k)==1)
@@ -49,12 +48,13 @@ void backi(int k)
                 backi(k+1);
             }
         }
+        if(i==1)
+            suma-=a[k];
     }
 
 }
 int main()
 {
-    scanf("%d",&n);
     backi(0);
     return 0;
 }
